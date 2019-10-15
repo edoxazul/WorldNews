@@ -50,7 +50,8 @@ dependencies {
 
     // Old new Time: https://www.threeten.org/threetenbp/
     //https://github.com/JakeWharton/ThreeTenABP
-    implementation 'org.threeten:threetenbp:1.4.0'
+    //implementation 'org.threeten:threetenbp:1.4.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
     // Retrofit: https://square.github.io/retrofit/
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'

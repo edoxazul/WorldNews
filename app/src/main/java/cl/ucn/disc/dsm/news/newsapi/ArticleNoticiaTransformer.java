@@ -8,19 +8,25 @@ import cl.ucn.disc.dsm.news.model.Noticia;
 
 public class ArticleNoticiaTransformer
         implements Transformer.NoticiaTransformer<Article> {
-
+    /**
+     *
+     * @see Transformer.NoticiaTransformer
+     */
 
     @Override
     public Noticia transform(final Article article) {
+
+        //The date
+        final ZonedDateTime publishedAt = ZonedDateTime.parse(article.getPublishedAt());
+
         return new Noticia(
                 article.getTitle(),
-                article.getSource().getName(), //FIXME : NPE?
+                article.getSource().getName(),
                 article.getAuthor(),
                 article.getUrl(),
                 article.getUrlToImage(),
                 article.getContent(),
-                ZonedDateTime.parse(article.getPublishedAt(),
-                        DateTimeFormatter.ISO_ZONED_DATE_TIME)
+                publishedAt
 
         );
 

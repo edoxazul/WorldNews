@@ -8,14 +8,12 @@ public class Noticia {
     /**
      * Title
      */
-
     private final String titulo;
 
     /**
      * Fuente. ej:Soy Antofagasta
      *
      */
-
     private final String fuente;
 
 
@@ -60,7 +58,9 @@ public class Noticia {
      * @param fecha
      */
 
-    public Noticia(String titulo, String fuente, String autor, String url, String urlFoto, String contenido, ZonedDateTime fecha) {
+    public Noticia(final String titulo,final String fuente, final String autor, final String url,
+                   final String urlFoto,final String contenido,final ZonedDateTime fecha)
+    {
         this.titulo = titulo;
         this.fuente = fuente;
         this.autor = autor;

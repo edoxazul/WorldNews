@@ -23,20 +23,21 @@ public class Transformer <T>{
      */
 
     public Transformer(final NoticiaTransformer<T> noticiaTransformer) {
-        Objects.requireNonNull(noticiaTransformer,"Se requiere Noticia");
+        Objects.requireNonNull(noticiaTransformer,"Se requiere un transformador de Noticias");
 
         this.noticiaTransformer = noticiaTransformer;
     }
 
     /**
      * Transforma una{@Link Collection} de T en un {@Link List} de {@Link Noticia}
+     *
      * @param collection
      * @return the List of Noticia.
      */
 
     public List<Noticia> transform(final Collection<T> collection){
 
-        Objects.requireNonNull(collection,"No se permite una Collection ");
+        Objects.requireNonNull(collection,"No se permite una Collection null ");
 
         //Microo ptimizacion : Tamanio de la coleccion igual a la lista
         final List<Noticia> noticias = new ArrayList<>(collection.size());
@@ -54,6 +55,12 @@ public class Transformer <T>{
 
     }
 
+    /**
+     * Responsable de transformar una T en una {@link Noticia}.
+     *
+     * @param <T> a usar como base.
+     */
+
     public interface NoticiaTransformer<T> {
 
         /**
@@ -64,6 +71,27 @@ public class Transformer <T>{
         Noticia transform(T t);
 
     }
+
+    /**
+     * La exception en caso de algun error en la transformacion.
+     */
+    public static class NoticiaTransformerException extends RuntimeException {
+
+        /**
+         * @see RuntimeException
+         */
+        public NoticiaTransformerException(final String message) {
+            super(message);
+        }
+
+        /**
+         * @see RuntimeException
+         */
+        public NoticiaTransformerException(final String message, final Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 
 
 }
