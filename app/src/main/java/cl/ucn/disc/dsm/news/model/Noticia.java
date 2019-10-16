@@ -42,6 +42,12 @@ public class Noticia {
     private final String contenido;
 
     /**
+     * Resumen
+     */
+    private final String resumen;
+
+
+    /**
      * Fecha de la noticia
      */
 
@@ -49,23 +55,25 @@ public class Noticia {
 
 
     /**
-     *  @param titulo
+     * @param titulo
      * @param fuente
      * @param autor
      * @param url
      * @param urlFoto
      * @param contenido
+     * @param resumen
      * @param fecha
      */
 
-    public Noticia(final String titulo,final String fuente, final String autor, final String url,
-                   final String urlFoto,final String contenido,final ZonedDateTime fecha)
+    public Noticia(final String titulo, final String fuente, final String autor, final String url,
+                   final String urlFoto, final String contenido, String resumen, final ZonedDateTime fecha)
     {
         this.titulo = titulo;
         this.fuente = fuente;
         this.autor = autor;
         this.url = url;
         this.urlFoto = urlFoto;
+        this.resumen = resumen;
         this.contenido = contenido;
         this.fecha = fecha;
     }
@@ -83,6 +91,10 @@ public class Noticia {
 
     public String getAutor() {
         return autor;
+    }
+
+    public String getResumen() {
+        return resumen;
     }
 
     public String getUrlFoto() {

@@ -1,5 +1,8 @@
 package cl.ucn.disc.dsm.news;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -8,46 +11,54 @@ import java.util.Objects;
 import cl.ucn.disc.dsm.news.model.Noticia;
 
 /**
- * @author Eduardo ALvarez S
+ * Transformador de T a Noticia.
+ *
+ * @author Diego Urrutia-Astorga.
  */
-
-public class Transformer <T>{
-    /**
-     * El transformador de Noticias
-     */
-    private final NoticiaTransformer<T> noticiaTransformer;
+public final class Transformer<T> {
 
     /**
-     * The constructor
-     * @param noticiaTransformer
+     * The Logger
      */
+    private static final Logger log = LoggerFactory.getLogger(Transformer.class);
 
-    public Transformer(final NoticiaTransformer<T> noticiaTransformer) {
-        Objects.requireNonNull(noticiaTransformer,"Se requiere un transformador de Noticias");
+    /**
+     * El transformador de Noticias.
+     */
+    private final NoticiaTrasformer<T> noticiaTrasformer;
 
-        this.noticiaTransformer = noticiaTransformer;
+    /**
+     * The Constructor.
+     *
+     * @param noticiaTrasformer a usar para la conversion.
+     */
+    public Transformer(final NoticiaTrasformer<T> noticiaTrasformer) {
+        Objects.requireNonNull(noticiaTrasformer, "Se requiere un transformador de noticias");
+        this.noticiaTrasformer = noticiaTrasformer;
     }
 
     /**
-     * Transforma una{@Link Collection} de T en un {@Link List} de {@Link Noticia}
+     * Transforma una {@link Collection} de T en un {@link List} de {@link Noticia}.
      *
-     * @param collection
+     * @param collection fuente de T.
      * @return the List of Noticia.
      */
+    public List<Noticia> transform(final Collection<T> collection) {
 
-    public List<Noticia> transform(final Collection<T> collection){
+        // No se permiten nulls
+        Objects.requireNonNull(collection, "No se permite una Collection null");
 
-        Objects.requireNonNull(collection,"No se permite una Collection null ");
-
-        //Microo ptimizacion : Tamanio de la coleccion igual a la lista
+        // MICROOPT: Tamanio de la coleccion igual a la lista
         final List<Noticia> noticias = new ArrayList<>(collection.size());
 
-        for (final T t : collection){
+        for (final T t : collection) {
 
-            final Noticia noticia =
-                    this.noticiaTransformer.transform(t);
-            noticias.add(noticia);
-
+            try {
+                final Noticia noticia = this.noticiaTrasformer.transform(t);
+                noticias.add(noticia);
+            } catch (NoticiaTransformerException ex) {
+                log.warn("Article skipped: {}", ex.getMessage(), ex);
+            }
 
         }
 
@@ -55,17 +66,16 @@ public class Transformer <T>{
 
     }
 
+
     /**
      * Responsable de transformar una T en una {@link Noticia}.
      *
      * @param <T> a usar como base.
      */
-
-    public interface NoticiaTransformer<T> {
+    public interface NoticiaTrasformer<T> {
 
         /**
-         *
-         * @param t a transformar
+         * @param t a transformar.
          * @return the Noticia a partir de t.
          */
         Noticia transform(T t);
@@ -75,7 +85,7 @@ public class Transformer <T>{
     /**
      * La exception en caso de algun error en la transformacion.
      */
-    public static class NoticiaTransformerException extends RuntimeException {
+    public static final class NoticiaTransformerException extends RuntimeException {
 
         /**
          * @see RuntimeException
@@ -91,7 +101,6 @@ public class Transformer <T>{
             super(message, cause);
         }
     }
-
 
 
 }
